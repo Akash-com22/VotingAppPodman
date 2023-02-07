@@ -23,7 +23,7 @@ jobs:
       run: |
         cd vote/
         podman build -t vote:v3 .
-        podman push localhost/vote:v1 ${{ secrets.DOCKER_REPOSITORY }}
+        podman push localhost/vote:v3 ${{ secrets.DOCKER_REPOSITORY }}
         
     - name: Result Application Build Image Using Podman
       run: |
