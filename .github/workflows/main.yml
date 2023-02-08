@@ -45,6 +45,7 @@ jobs:
 
     - name: Configure kubectl
       run: |
+        ls
         echo ${{ secrets.KUBECONFIG }} | base64 -d >  kubeconfig.config
         export KUBECONFIG=kubeconfig.config
         kubectl get nodes
