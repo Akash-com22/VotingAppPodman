@@ -5,7 +5,6 @@ on: workflow_dispatch
 
 env:
   DOCKER_REGISTRY: docker.io
-  KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
 jobs:
   build:
@@ -43,12 +42,12 @@ jobs:
       with:
         kubectlVersion: latest
 
-    - name: Configure kubectl
-      run: |
-        echo ${{ secrets.KUBECONFIG }} | base64 --decode >  kubeconfig.config
-        cat kubeconfig.config
-        export KUBECONFIG=kubeconfig.config
-        kubectl get nodes
+
+    - uses: azure/k8s-set-context@v3
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.KUBECONFIG }}
+        context: akscluster-002
    
     - name: Test connection to AKS cluster
       run: |
