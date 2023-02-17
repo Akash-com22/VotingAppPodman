@@ -22,20 +22,20 @@ jobs:
       run: |
         cd vote/
         sudo docker build -t vote:v3 .
-        sudo docker push vote:v3 ${{ secrets.DOCKER_REPOSITORY }}
+        sudo docker push vote:v3 
         
     - name: Result Application Build Image Using Podman
       run: |
         cd result/
         sudo docker build -t result:r3 .
-        sudo docker push result:r3 ${{ secrets.DOCKER_REPOSITORY }}
+        sudo docker push result:r3 
   
 
     - name: Worker Application Build Image Using Podman
       run: |
         cd worker/
         sudo docker build -t worker:w3 .
-        sudo docker push worker:w3 ${{ secrets.DOCKER_REPOSITORY }}
+        sudo docker push worker:w3 
         
     - name: Setup kubectl and plugins
       uses: marcofranssen/setup-kubectl@v0.3.0
