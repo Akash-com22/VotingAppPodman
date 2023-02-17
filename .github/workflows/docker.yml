@@ -1,0 +1,57 @@
+name: Build and Push Docker Image with Docker
+
+on: workflow_dispatch
+  
+
+env:
+  DOCKER_REGISTRY: docker.io
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    
+    - name: Checkout code
+      uses: actions/checkout@v3.3.0
+
+    - name: Login to Docker registry by Podman
+      run: |
+        docker login  "${{ env.DOCKER_REGISTRY }}" -u "${{ secrets.DOCKER_USERNAME }}" -p ${{ secrets.DOCKER_PASSWORD }}
+    - name: Voting Application Build Image Using Podman
+      run: |
+        cd vote/
+        docker build -t vote:v3 .
+        docker push localhost/vote:v3 ${{ secrets.DOCKER_REPOSITORY }}
+        
+    - name: Result Application Build Image Using Podman
+      run: |
+        cd result/
+        docker build -t result:r3 .
+        docker push localhost/result:r3 ${{ secrets.DOCKER_REPOSITORY }}
+  
+
+    - name: Worker Application Build Image Using Podman
+      run: |
+        cd worker/
+        docker build -t worker:w3 .
+        docker push localhost/worker:w3 ${{ secrets.DOCKER_REPOSITORY }}
+        
+    - name: Setup kubectl and plugins
+      uses: marcofranssen/setup-kubectl@v0.3.0
+      with:
+        kubectlVersion: latest
+
+
+    - uses: azure/k8s-set-context@v3
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.KUBECONFIG }}
+        context: akscluster-002
+   
+    - name: Test connection to AKS cluster
+      run: |
+        ls
+        cd k8s-specifications/
+        kubectl create ns docker
+        kubectl apply -f . -n docker
