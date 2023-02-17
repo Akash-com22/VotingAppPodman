@@ -17,7 +17,7 @@ jobs:
 
     - name: Login to Docker registry by Podman
       run: |
-        docker login  "${{ env.DOCKER_REGISTRY }}" -u "${{ secrets.DOCKER_USERNAME }}" -p ${{ secrets.DOCKER_PASSWORD }}
+        sudo docker login  "${{ env.DOCKER_REGISTRY }}" -u "${{ secrets.DOCKER_USERNAME }}" -p ${{ secrets.DOCKER_PASSWORD }}
     - name: Voting Application Build Image Using Podman
       run: |
         cd vote/
