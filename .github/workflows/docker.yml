@@ -4,7 +4,8 @@ on: workflow_dispatch
   
 
 env:
-  DOCKER_REGISTRY: docker.io
+  DOCKER_REGISTRY: akashkam
+
 
 jobs:
   build:
@@ -17,25 +18,25 @@ jobs:
 
     - name: Login to Docker registry by Podman
       run: |
-        sudo docker login  "${{ env.DOCKER_REGISTRY }}" -u "${{ secrets.DOCKER_USERNAME }}" -p ${{ secrets.DOCKER_PASSWORD }}
+        sudo docker login  -u "${{ secrets.DOCKER_USERNAME }}" -p ${{ secrets.DOCKER_PASSWORD }}
     - name: Voting Application Build Image Using Podman
       run: |
         cd vote/
-        sudo docker build -t vote:v3 .
-        sudo docker push vote:v3 
+        sudo docker build -t ${{ env.DOCKER_REGISTRY }}/vote .
+        sudo docker push ${{ env.DOCKER_REGISTRY }}/vote
         
     - name: Result Application Build Image Using Podman
       run: |
         cd result/
-        sudo docker build -t result:r3 .
-        sudo docker push result:r3 
+        sudo docker build -t ${{ env.DOCKER_REGISTRY }}/result .
+        sudo docker push ${{ env.DOCKER_REGISTRY }}/result 
   
 
     - name: Worker Application Build Image Using Podman
       run: |
         cd worker/
-        sudo docker build -t worker:w3 .
-        sudo docker push worker:w3 
+        sudo docker build -t ${{ env.DOCKER_REGISTRY }}/worker .
+        sudo docker push ${{ env.DOCKER_REGISTRY }}/worker
         
     - name: Setup kubectl and plugins
       uses: marcofranssen/setup-kubectl@v0.3.0
