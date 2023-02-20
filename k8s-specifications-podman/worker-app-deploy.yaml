@@ -21,4 +21,4 @@ spec:
     spec:
       containers:
         - name: worker-app
-          image: rohitshavili/worker
+          image: akashkam/podman:worker
