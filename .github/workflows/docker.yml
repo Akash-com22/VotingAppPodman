@@ -53,6 +53,6 @@ jobs:
     - name: Test connection to AKS cluster
       run: |
         ls
-        cd k8s-specifications/
+        cd k8s-specifications-docker/
         kubectl create ns docker
         kubectl apply -f . -n docker
