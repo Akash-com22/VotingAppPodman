@@ -27,7 +27,6 @@ jobs:
         
     - name: Result Application Build Image Using Podman
       run: |
-        cd result/
         podman build -t result result/.
         podman push localhost/result "akashkam/result"
   
