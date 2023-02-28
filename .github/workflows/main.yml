@@ -48,7 +48,7 @@ jobs:
         kubeconfig: ${{ secrets.KUBECONFIG }}
         context: akscluster-002
    
-    - name: Test connection to AKS cluster
+    - name: Manifest apply to AKS cluster
       run: |
         ls
         cd k8s-specifications-podman/
