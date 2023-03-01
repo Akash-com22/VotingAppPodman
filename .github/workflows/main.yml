@@ -5,6 +5,9 @@ on: workflow_dispatch
 
 env:
   DOCKER_REGISTRY: docker.io
+  DOCKER_REPO : akahkam/vote
+  DOCKER_REPO_R : akahkam/result
+  DOCKER_REPO_W : akahkam/worker
   
   
 
@@ -24,20 +27,20 @@ jobs:
       run: |
         podman build -t vote vote/.
         podman tag localhost/vote vote:${{ github.sha }}
-        podman push vote:${{ github.sha }} akashkam/vote:${{ github.sha }}
+        podman push vote:${{ github.sha }} ${{ env.DOCKER_REPO }}:${{ github.sha }}
         
     - name: Result Application Build Image Using Podman
       run: |
         podman build -t result result/.
-        podman tag localhost/result vote:${{ github.sha }}
-        podman push result:${{ github.sha }} "akashkam/result:${{ github.sha }}"
+        podman tag localhost/result result:${{ github.sha }}
+        podman push result:${{ github.sha }} "${{ env.DOCKER_REPO }}:${{ github.sha }}"
   
 
     - name: Worker Application Build Image Using Podman
       run: |
         podman build -t worker worker/.
         podman tag localhost/worker worker:${{ github.sha }}
-         podman push worker:${{ github.sha }} "akashkam/worker:${{ github.sha }}"
+         podman push worker:${{ github.sha }} "${{ env.DOCKER_REPO }}:${{ github.sha }}"
         
     - name: Setup kubectl and plugins
       uses: marcofranssen/setup-kubectl@v0.3.0
