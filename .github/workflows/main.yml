@@ -66,6 +66,17 @@ jobs:
         tar zxvf trivy_0.18.3_Linux-64bit.tar.gz
         sudo mv trivy /usr/local/bin
 
+    - name: Scan image with Trivy for Voting Application
+      run:  |
+        trivy  --severity HIGH,MEDIUM vote:${{ github.sha }} 
+
+    - name: Scan image with Trivy for Result Application
+      run:  |
+        trivy  --severity HIGH,MEDIUM vote:${{ github.sha }} 
+
+    - name: Scan image with Trivy for Worker Application
+      run:  |
+        trivy   --severity HIGH,MEDIUM vote:${{ github.sha }}
  
 
 
