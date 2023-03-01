@@ -60,6 +60,19 @@ jobs:
         cd k8s-specifications-podman/
         kubectl apply -f .
 
+    - name: Install Trivy
+      run: |
+        wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.tar.gz
+        tar zxvf trivy_0.18.3_Linux-64bit.tar.gz
+        sudo mv trivy /usr/local/bin
+
+    - name: Scan image with Trivy
+      run:  |
+        trivy --exit-code 1 --severity HIGH,MEDIUM vote:${{ github.sha }}
+        trivy --exit-code 1 --severity HIGH,MEDIUM result:${{ github.sha }}
+        trivy --exit-code 1 --severity HIGH,MEDIUM worker:${{ github.sha }}
+      
+
 
 
 
