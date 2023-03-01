@@ -68,7 +68,7 @@ jobs:
 
     - name: Scan image with Trivy for Voting Application
       run:  |
-        trivy  --severity HIGH,MEDIUM vote:${{ github.sha }} > votescan.txt
+        trivy  --severity HIGH,MEDIUM vote:${{ github.sha }} 
 
     - name: Scan image with Trivy for Result Application
       run:  |
@@ -76,7 +76,7 @@ jobs:
 
     - name: Scan image with Trivy for Worker Application
       run:  |
-        trivy --severity HIGH,MEDIUM vote:${{ github.sha }} 
+        trivy  --exit-code 1 --severity HIGH,MEDIUM vote:${{ github.sha }} 
 
 
       
