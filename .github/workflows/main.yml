@@ -5,9 +5,9 @@ on: workflow_dispatch
 
 env:
   DOCKER_REGISTRY: docker.io
-  DOCKER_REPO : akahkam/vote
-  DOCKER_REPO_R : akahkam/result
-  DOCKER_REPO_W : akahkam/worker
+  DOCKER_REPO : akashkam/vote
+  DOCKER_REPO_R : akashkam/result
+  DOCKER_REPO_W : akashkam/worker
   
   
 
