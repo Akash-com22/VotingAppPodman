@@ -29,13 +29,15 @@ jobs:
     - name: Result Application Build Image Using Podman
       run: |
         podman build -t result result/.
-        podman push localhost/result "akashkam/result"
+        podman tag localhost/result vote:${{ github.sha }}
+        podman push result:${{ github.sha }} "akashkam/result:${{ github.sha }}"
   
 
     - name: Worker Application Build Image Using Podman
       run: |
         podman build -t worker worker/.
-        podman push localhost/worker "akashkam/worker"
+        podman tag localhost/worker worker:${{ github.sha }}
+         podman push worker:${{ github.sha }} "akashkam/worker:${{ github.sha }}"
         
     - name: Setup kubectl and plugins
       uses: marcofranssen/setup-kubectl@v0.3.0
