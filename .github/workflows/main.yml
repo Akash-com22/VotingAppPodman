@@ -23,7 +23,8 @@ jobs:
     - name: Voting Application Build Image Using Podman
       run: |
         podman build -t vote vote/.
-        podman push localhost/vote akashkam/vote
+        podman tag localhost/vote vote:${{ github.sha }}
+        podman push vote:${{ github.sha }} akashkam/vote:${{ github.sha }}
         
     - name: Result Application Build Image Using Podman
       run: |
