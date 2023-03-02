@@ -40,7 +40,25 @@ jobs:
       run: |
         podman build -t worker worker/.
         podman tag localhost/worker worker:${{ github.sha }}
-         podman push worker:${{ github.sha }} "${{ env.DOCKER_REPO_W }}":${{ github.sha }}
+        podman push worker:${{ github.sha }} "${{ env.DOCKER_REPO_W }}":${{ github.sha }}
+         
+    - name: Install Trivy
+      run: |
+        wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.tar.gz
+        tar zxvf trivy_0.18.3_Linux-64bit.tar.gz
+        sudo mv trivy /usr/local/bin
+
+    - name: Scan image with Trivy for Voting Application
+      run:  |
+        trivy  --severity CRITICAL,HIGH,MEDIUM vote:${{ github.sha }} 
+
+    - name: Scan image with Trivy for Result Application
+      run:  |
+        trivy  --severity CRITICAL,HIGH,MEDIUM result:${{ github.sha }} 
+
+    - name: Scan image with Trivy for Worker Application
+      run:  |
+        trivy   --severity CRITICAL,HIGH,MEDIUM worker:${{ github.sha }}
         
     - name: Setup kubectl and plugins
       uses: marcofranssen/setup-kubectl@v0.3.0
@@ -60,23 +78,7 @@ jobs:
         cd k8s-specifications-podman/
         kubectl apply -f .
 
-    - name: Install Trivy
-      run: |
-        wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.tar.gz
-        tar zxvf trivy_0.18.3_Linux-64bit.tar.gz
-        sudo mv trivy /usr/local/bin
 
-    - name: Scan image with Trivy for Voting Application
-      run:  |
-        trivy  --severity CRITICAL,HIGH,MEDIUM vote:${{ github.sha }} 
-
-    - name: Scan image with Trivy for Result Application
-      run:  |
-        trivy  --severity CRITICAL,HIGH,MEDIUM result:${{ github.sha }} 
-
-    - name: Scan image with Trivy for Worker Application
-      run:  |
-        trivy   --severity CRITICAL,HIGH,MEDIUM worker:${{ github.sha }}
  
 
 
